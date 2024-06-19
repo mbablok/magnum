@@ -15,6 +15,7 @@ import java.time.OffsetDateTime
 import javax.sql.DataSource
 import scala.util.Using
 import scala.util.Using.Manager
+import java.util.UUID
 
 class PgTests extends FunSuite, TestContainersFixtures:
 
@@ -410,6 +411,7 @@ class PgTests extends FunSuite, TestContainersFixtures:
       firstName: Option[String],
       lastName: String,
       isAdmin: Boolean,
+      otherId: Option[UUID],
       created: OffsetDateTime
   ) derives DbCodec
 
@@ -434,6 +436,38 @@ class PgTests extends FunSuite, TestContainersFixtures:
           .returning[String]
           .iterator()
         assertEquals(it.size, 8)
+      )
+
+  test("nullable UUID".only):
+    connect(ds()):
+
+      @Table(PostgresDbType, SqlNameMapper.CamelToSnakeCase)
+      case class PersonWithUUID(
+          id: Long,
+          firstName: Option[String],
+          lastName: String,
+          isAdmin: Boolean,
+          otherId: Option[UUID],
+          created: OffsetDateTime
+      ) derives DbCodec
+
+      val id = 100
+      val p = PersonWithUUID(
+        id = id,
+        firstName = Some("Chandler"),
+        lastName = "Brown",
+        isAdmin = false,
+        otherId = None,
+        created = OffsetDateTime.now
+      )
+
+      val _personRepo = Repo[PersonWithUUID, PersonWithUUID, Long]
+      val inserted = _personRepo.insert(p)
+      val fetched = _personRepo.findById(id).get
+
+      assertEquals(
+        fetched.lastName,
+        "Brown"
       )
 
   @Table(PostgresDbType, SqlNameMapper.CamelToSnakeCase)

@@ -5,15 +5,72 @@ create table person (
     first_name varchar(50),
     last_name varchar(50) not null,
     is_admin boolean not null,
+    other_id uuid,
     created timestamptz not null default now()
 );
 
-insert into person (first_name, last_name, is_admin, created) values
-('George', 'Washington', true, now()),
-('Alexander', 'Hamilton', true, now()),
-('John', 'Adams', true, now()),
-('Benjamin', 'Franklin', true, now()),
-('John', 'Jay', true, now()),
-('Thomas', 'Jefferson', true, now()),
-('James', 'Madison', true, now()),
-(null, 'Nagro', false, timestamp '1997-08-12');
+insert into
+    person (
+        first_name,
+        last_name,
+        is_admin,
+        other_id,
+        created
+    )
+values
+    (
+        'George',
+        'Washington',
+        true,
+        '4260a10a-3b25-45aa-9b09-3fd962cda591',
+        now()
+    ),
+    (
+        'Alexander',
+        'Hamilton',
+        true,
+        '4260a10a-3b25-45aa-9b09-3fd962cda592',
+        now()
+    ),
+    (
+        'John',
+        'Adams',
+        true,
+        '4260a10a-3b25-45aa-9b09-3fd962cda593',
+        now()
+    ),
+    (
+        'Benjamin',
+        'Franklin',
+        true,
+        '4260a10a-3b25-45aa-9b09-3fd962cda594',
+        now()
+    ),
+    (
+        'John',
+        'Jay',
+        true,
+        '4260a10a-3b25-45aa-9b09-3fd962cda595',
+        now()
+    ),
+    (
+        'Thomas',
+        'Jefferson',
+        true,
+        '4260a10a-3b25-45aa-9b09-3fd962cda596',
+        now()
+    ),
+    (
+        'James',
+        'Madison',
+        true,
+        '4260a10a-3b25-45aa-9b09-3fd962cda597',
+        now()
+    ),
+    (
+        null,
+        'Nagro',
+        false,
+        null,
+        timestamp '1997-08-12'
+    );
